@@ -30,14 +30,14 @@ def predicted():
              revenue = request.form['revenue'] 
              total_spent = request.form['total_spent']
              satisfaction_score = request.form['satisfaction_score'] 
-           
+             loyalty_score=request.form['loyalty_score']
 
              
              loyalty_prediction =  {
                                     "Revenue": revenue,
                                     "Total Spent": total_spent,
                                     "Satisfaction Score": satisfaction_score,
-                                    
+                                    "loyalty_score": loyalty_score
                                     
                                    
                                     
@@ -69,7 +69,7 @@ def predicted():
              return render_template('pred.html',revenue = revenue, 
              total_spent = total_spent,
              satisfaction_score = satisfaction_score,
-    
+             loyalty_score =loyalty_score
              )
      
              
