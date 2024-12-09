@@ -47,7 +47,7 @@ def predicted():
              loyalty_predictdf = pd.DataFrame([loyalty_prediction])
 
              # encoding
-             encoder = pickle.load(open('l_encoder (1).pkl','rb'))
+            # encoder = pickle.load(open('l_encoder (1).pkl','rb'))
             
              x = loyalty_predictdf
              print(x)
