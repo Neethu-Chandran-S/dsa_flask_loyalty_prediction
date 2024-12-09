@@ -95,16 +95,16 @@
                      
                      
                     
-                     <p>Result :<span id="result"></span></p>
+                     <p>Loyalty Score:<span id="loyalty_score"></span></p>
                    </div>
                  </div>
                 </div>
               
                 <script>
-                 var res = "{{res}}";
+                 var loyalty_score = "{{loyalty_score}}";
             
-                // Check if 'res' has a value
-                  if (res !== "") {
+                // Check if 'loyalty_score' has a value
+                  if (loyalty_score !== "") {
                     document.getElementById("revenue").innerText = "{{revenue}}";
                     document.getElementById("total_spent").innerText = "{{total_spent}}";
                     document.getElementById("satisfaction_score").innerText = "{{satisfaction_score}}";
@@ -112,7 +112,7 @@
                    
                   
                     
-                    //document.getElementById("result").innerText = res;
+                    //document.getElementById("loyalty_score").innerText = loyalty_score;
             
                     // Show the container
                     document.getElementById("resultContainer").style.display = "block";

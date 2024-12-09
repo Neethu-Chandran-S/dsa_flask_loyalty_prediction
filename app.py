@@ -32,14 +32,14 @@ def predicted():
              satisfaction_score = request.form['satisfaction_score'] 
            
 
-             results=0
+             
              loyalty_prediction =  {
                                     "Revenue": revenue,
                                     "Total Spent": total_spent,
                                     "Satisfaction Score": satisfaction_score,
                                     
                                     
-                                    "Results" :results
+                                   
                                     
                                     }
              
@@ -70,7 +70,7 @@ def predicted():
              total_spent = total_spent,
              satisfaction_score = satisfaction_score,
     
-             res = results)
+             )
      
              
              
