@@ -64,7 +64,7 @@ def predicted():
              #modeling
              pickled_model = pickle.load(open('lr_newmodel.pkl','rb'))
 
-             results = pickled_model.predict(loyalty_predict_scaled)     
+             loyalty_score = pickled_model.predict(loyalty_predict_scaled)     
 
              return render_template('pred.html',revenue = revenue, 
              total_spent = total_spent,
