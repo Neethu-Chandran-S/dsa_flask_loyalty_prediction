@@ -1,53 +1,80 @@
-from flask import Flask, request, jsonify, render_template
-import pandas as pd
+from flask import Flask,render_template,request
 import pickle
+import pandas as pd
 import numpy as np
-import joblib
 
 app = Flask(__name__)
 
-# Load the trained models and encoders
-scaler = joblib.load('std_scalar (1).pkl')
-encoder = joblib.load('l_encoder (1).pkl')
-
-lr_model = joblib.load('lr_newmodel.pkl')
-
-
-# Feature list for proper input mapping
-selected_features = ['Revenue','Total Spent','Satisfaction Score']
+prediction_values = pd.read_csv("prediction_values (2).csv")
+encoded_values = pd.read_csv("tobe_scaled (1).csv")
 
 @app.route('/')
-def index():
+def homepage():
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+
+
+@app.route('/predict')
 def predict():
-    # Parse JSON data
-    data = request.json
-    try:
-        # Convert to DataFrame for processing
-        input_data = pd.DataFrame([data])
+    return render_template('predict.html')
 
-        # Scale numerical features
-        input_data[['Revenue', 'Total Spent', 'Satisfaction Score']] = scaler.transform(
-            input_data[['Revenue', 'Total Spent', 'Revenue']]
-        )
+@app.route("/prediction", methods = ["GET","POST"])
+def predicted():
+        if request.method == 'POST':
+             
+             revenue = request.form['revenue'] 
+             total_spent = request.form['total_spent']
+             satisfaction_score = request.form['satisfaction_score'] 
+           
 
+             results=0
+             loyalty_prediction =  {
+                                    "Revenue": revenue,
+                                    "Total Spent": total_spent,
+                                    "Satisfaction Score": satisfaction_score,
+                                    
+                                    
+                                    "Results" :results
+                                    
+                                    }
+             
+             #dataframe
+             loyalty_predictdf = pd.DataFrame([loyalty_prediction])
+
+             # encoding
+             encoder = pickle.load(open('l_encoder (1).pkl','rb'))
+            
+             x = loyalty_predictdf
+             print(x)
+
+             #scaling
+             scalar = pickle.load(open('std_scalar (1).pkl','rb'))
+
+             scalar.fit_transform(encoded_values)
+             loyalty_predict_scaled = scalar.transform(loyalty_predictdf)
+             
+             print("Scaled ", loyalty_predict_scaled)
+             #x = loyalty_predict_scaled
+
+             #modeling
+             pickled_model = pickle.load(open('lr_newmodel.pkl','rb'))
+
+             results = pickled_model.predict(loyalty_predict_scaled)     
+
+             return render_template('pred.html',revenue = revenue, 
+             total_spent = total_spent,
+             satisfaction_score = satisfaction_score,
+    
+             res = results)
      
-        
-       
+             
+             
+         
 
-        # Select RFE-selected features
-        input_data = input_data[selected_features]
-
-        # Make prediction
-        prediction = lr_model.predict(input_data)
-      
-
-        return jsonify({'Loyalty Score': prediction})
-
-    except Exception as e:
-        return jsonify({'error': str(e)})
-
-if __name__== '_main_':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
